@@ -5,7 +5,8 @@ Gem::Specification.new do |s|
     s.date = %q{2019-12-31}
     s.summary = 'read file'
     s.files = [
-        "lib/read_config_data.rb"
+        "lib/read_config_data.rb",
+        "lib/read_sh_data.rb"
     ]
     s.require_paths = ["lib"]
 end

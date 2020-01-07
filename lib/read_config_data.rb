@@ -2,13 +2,13 @@
 # Author::      Madhusudhan Reddy Marri.
 # Copyright::   Copyright (c) 20019
 # License::     MIT
-# URL::         https://github.com/maddyreddie/read_config_data
+# URL::         https://github.com/maddyreddie/read_config_data.git
 
 class ReadConfigData
 
   Version = '0.0.1'
 
-  attr_accessor :config_file, :params, :groups, :workers, :pairs
+  attr_accessor :config_file, :params, :groups, :workers, :pairs, :data
   
   def initialize(config_file=nil, separator='=', comments=['#', ';'])
     @config_file = config_file
@@ -16,6 +16,7 @@ class ReadConfigData
     @groups = []
     @workers = []
     @pairs = []
+    @data = data
     @splitRegex = '\s*' + separator + '\s*'
     @comments = comments
 
@@ -38,6 +39,7 @@ class ReadConfigData
   def import_config()
     # The config is top down.. anything after a [group] gets added as part
     # of that group until a new [group] is found.
+    data = ''
     group = nil
     worker = ''
     workers = []
@@ -46,7 +48,7 @@ class ReadConfigData
     tag_id = nil
     worker_h = {}
     open(self.config_file) { |f| f.each_with_index do |line, i|
-      line.strip!
+      data = data + ' ' + line
 
       # force_encoding not available in all versions of ruby
       begin
@@ -128,6 +130,7 @@ class ReadConfigData
         end
       end
     end }
+    self.data = data
   end
 
   # This method will provide the value held by the object "@param"
@@ -167,6 +170,18 @@ class ReadConfigData
 
   def get_pair(worker_id)
     self.pairs.select {|s| s[worker_id]}
+  end
+
+  def get_data
+    self.data
+  end
+
+  def get_file_name
+    self.config_file.split('/').last
+  end
+
+  def get_file_path
+    self.config_file
   end
 
 
